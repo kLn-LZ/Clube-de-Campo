@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -24,4 +26,10 @@ public class Associado {
     private Contato contato;
     private LocalDate dataCadastrado;
     private TipoAssociado tipoAssociado;
+    @OneToMany(mappedBy = "associado", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Dependente> dependentes = new ArrayList<>();
+    @OneToMany(mappedBy = "associado", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reserva> reservas = new ArrayList<>();
+    @OneToMany(mappedBy = "associado", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Cobranca> cobrancas = new ArrayList<>();
 }

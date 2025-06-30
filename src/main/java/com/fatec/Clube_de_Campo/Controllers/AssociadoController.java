@@ -29,4 +29,10 @@ public class AssociadoController {
     public ResponseEntity<List<Associado>> listaAssociados() {
         return ResponseEntity.ok(associadoService.listaAssociados());
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluiAssociadoPorId(@PathVariable  Long id) {
+        associadoService.excluiPorId(id);
+        return ResponseEntity.noContent().build();
+    }
 }

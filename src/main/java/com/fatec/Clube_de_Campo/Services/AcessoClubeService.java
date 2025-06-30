@@ -7,17 +7,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class AcessoClubeService {
     @Autowired
-    private PagamentoService pagamentoService;
+    private CobrancaService cobrancaService;
 
     public StatusAcesso buscaStatusdeAcesso(Long associadoId) {
-        int mesesNaoPagos = pagamentoService.calculaMesesNaoPagos(associadoId);
+        int mesesNaoPagos = cobrancaService.calculaMesesNaoPagos(associadoId);
         if (mesesNaoPagos >= 4) {
             return StatusAcesso.BLOQUEADO;
-        } else if (mesesNaoPagos >= 3) {
+        }
+        if (mesesNaoPagos >= 3) {
             return StatusAcesso.APENAS_QUADRA;
-        } else if (mesesNaoPagos >= 2) {
+        }
+        if (mesesNaoPagos >= 2) {
             return StatusAcesso.RESTRITO;
         }
+
         return StatusAcesso.COMPLETO;
     }
 

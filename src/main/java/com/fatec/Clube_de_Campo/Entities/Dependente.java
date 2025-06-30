@@ -17,6 +17,7 @@ public class Dependente {
     private String nome;
     private String rg;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "associado_id", nullable = false)
     private Associado associado;
 }
