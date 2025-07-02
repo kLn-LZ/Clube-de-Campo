@@ -21,9 +21,9 @@ public class Reserva {
     @JoinColumn(name = "associado_id", nullable = false)
     private Associado associado;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "area_id", nullable = false)
+    @JoinColumn(name = "area_id", nullable = true)
     private Area area;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "agenda_atividade_id", nullable = false)
+    @JoinColumn(name = "agenda_atividade_id", nullable = true)
     private AgendaAtividade agendaAtividade;
 }

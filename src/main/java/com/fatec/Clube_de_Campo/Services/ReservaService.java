@@ -33,7 +33,17 @@ public class ReservaService {
 
     @Transactional
     public ReservaResponseDTO insereReservaArea(ReservaAreaRequestDTO request) {
-        validarAtributosEmComum(request.associadoId(), request.data(), request.hora());
+        validarAtributosEmComum(request.associadoId());
+
+        LocalDate parsedData;
+        try {
+            parsedData = LocalDate.parse(request.data(), DateTimeFormatter.ISO_LOCAL_DATE);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Formato de data inválido. Use YYYY-MM-DD");
+        }
+        if (!parsedData.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("A data da reserva deve ser no futuro");
+        }
         if (request.areaId() == null || request.areaId() <= 0) {
             throw new IllegalArgumentException("ID da área é obrigatório");
         }
@@ -66,7 +76,7 @@ public class ReservaService {
 
     @Transactional
     public ReservaResponseDTO insereReservaAtividade(ReservaAtividadeRequestDTO request) {
-        validarAtributosEmComum(request.associadoId(), request.data(), request.hora());
+        validarAtributosEmComum(request.associadoId());
         if (request.agendaAtividadeId() == null || request.agendaAtividadeId() <= 0) {
             throw new IllegalArgumentException("ID da agenda de atividade é obrigatório");
         }
@@ -138,7 +148,18 @@ public class ReservaService {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("ID inválido");
         }
-        validarAtributosEmComum(request.associadoId(), request.data(), request.hora());
+        validarAtributosEmComum(request.associadoId());
+
+        LocalDate parsedData;
+        try {
+            parsedData = LocalDate.parse(request.data(), DateTimeFormatter.ISO_LOCAL_DATE);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Formato de data inválido. Use YYYY-MM-DD");
+        }
+        if (!parsedData.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("A data da reserva deve ser no futuro");
+        }
+
         if (request.areaId() == null || request.areaId() <= 0) {
             throw new IllegalArgumentException("ID da área é obrigatório");
         }
@@ -187,7 +208,7 @@ public class ReservaService {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("ID inválido");
         }
-        validarAtributosEmComum(request.associadoId(), request.data(), request.hora());
+        validarAtributosEmComum(request.associadoId());
         if (request.agendaAtividadeId() == null || request.agendaAtividadeId() <= 0) {
             throw new IllegalArgumentException("ID da agenda de atividade é obrigatório");
         }
@@ -255,23 +276,9 @@ public class ReservaService {
         reservaRepository.deleteById(id);
     }
 
-    private void validarAtributosEmComum(Long associadoId, String data, String hora) {
+    private void validarAtributosEmComum(Long associadoId) {
         if (associadoId == null || associadoId <= 0) {
             throw new IllegalArgumentException("ID do associado é obrigatório");
-        }
-        LocalDate parsedData;
-        try {
-            parsedData = LocalDate.parse(data, DateTimeFormatter.ISO_LOCAL_DATE);
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Formato de data inválido. Use YYYY-MM-DD");
-        }
-        if (!parsedData.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("A data da reserva deve ser no futuro");
-        }
-        try {
-            LocalTime.parse(hora, DateTimeFormatter.ofPattern("HH:mm"));
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Formato de hora inválido. Use HH:mm");
         }
     }
 }

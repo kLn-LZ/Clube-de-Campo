@@ -14,7 +14,7 @@ public class AcessoClubeController {
     private AcessoClubeService acessoClubeService;
 
     @GetMapping
-    public ResponseEntity<StatusAcessoResponseDTO> buscarStatusDeAcesso(@RequestParam Long associadoId) {
+    public ResponseEntity<StatusAcessoResponseDTO> buscarStatusDeAcesso(@PathVariable Long associadoId) {
         return ResponseEntity.ok(acessoClubeService.buscarStatusDeAcesso(associadoId));
     }
 }
