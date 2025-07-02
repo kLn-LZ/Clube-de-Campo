@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface AssociadoRepository extends JpaRepository<Associado, Long> {
     Optional<Associado> findByCpf(String cpf);
+    boolean existsByEnderecoId(Long enderecoId);
+    boolean existsByTipoAssociadoId(Long tipoAssociadoId);
 }

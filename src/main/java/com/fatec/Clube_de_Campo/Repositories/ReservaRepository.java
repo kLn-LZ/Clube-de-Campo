@@ -11,6 +11,8 @@ import java.util.Optional;
 
 @Repository
 public interface ReservaRepository extends JpaRepository<Reserva, Long> {
-    Optional<Reserva> findByAreaAndDataAndHora(Area area, LocalDate Data, String Hora);
+    Optional<Reserva> findByAreaIdAndDataAndHora(Long tipoAreaId, LocalDate Data, String Hora);
     Optional<Reserva> findByAssociadoAndDataAndHora(Associado associado, LocalDate data, String hora);
+    Optional<Reserva> findByAreaId(Long tipoAreaId);
+    Optional<Reserva> findByAreaAndDataAndHora(Area area, LocalDate data, String hora);
 }

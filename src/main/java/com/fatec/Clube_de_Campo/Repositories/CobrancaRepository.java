@@ -7,4 +7,8 @@ import java.util.Optional;
 
 public interface CobrancaRepository extends JpaRepository<Cobranca, Long> {
     Optional<Cobranca> findTopByAssociadoIdOrderByDataVencimentoDesc(Long associadoId);
+    Optional<Cobranca> findFirstByAssociadoIdAndPagoFalseOrderByDataVencimentoAsc(Long associadoId);
+    boolean existsByAssociadoIdAndMesAndAno(Long associadoId, int mes, int ano);
+
+
 }

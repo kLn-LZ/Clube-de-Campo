@@ -1,11 +1,15 @@
 package com.fatec.Clube_de_Campo.Controllers;
 
 import com.fatec.Clube_de_Campo.Entities.Associado;
+import com.fatec.Clube_de_Campo.Entities.DTOs.request.AssociadoRequestDTO;
+import com.fatec.Clube_de_Campo.Entities.DTOs.response.AssociadoResponseDTO;
 import com.fatec.Clube_de_Campo.Services.AssociadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -15,24 +19,30 @@ public class AssociadoController {
     private AssociadoService associadoService;
 
     @PostMapping
-    public ResponseEntity<Associado> registraAssociado(@RequestBody Associado associado) {
-        Associado associadoCriado = associadoService.insere(associado);
-        return ResponseEntity.ok(associadoCriado);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Associado> buscaAssociadoPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(associadoService.buscaAssociadoPorId(id));
+    public ResponseEntity<AssociadoResponseDTO> criarAssociado(@RequestBody AssociadoRequestDTO request, UriComponentsBuilder uriBuilder) {
+        AssociadoResponseDTO criado = associadoService.insere(request);
+        URI location = uriBuilder.path("/api/associados/{id}").buildAndExpand(criado.id()).toUri();
+        return ResponseEntity.created(location).body(criado);
     }
 
     @GetMapping
-    public ResponseEntity<List<Associado>> listaAssociados() {
-        return ResponseEntity.ok(associadoService.listaAssociados());
+    public ResponseEntity<List<AssociadoResponseDTO>> listarAssociados() {
+        return ResponseEntity.ok(associadoService.listarTodos());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AssociadoResponseDTO> buscarAssociadoPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(associadoService.buscarPorId(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AssociadoResponseDTO> atualizarAssociado(@PathVariable Long id, @RequestBody AssociadoRequestDTO request) {
+        return ResponseEntity.ok(associadoService.atualizar(id, request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluiAssociadoPorId(@PathVariable  Long id) {
-        associadoService.excluiPorId(id);
+    public ResponseEntity<Void> excluirAssociado(@PathVariable Long id) {
+        associadoService.excluir(id);
         return ResponseEntity.noContent().build();
     }
 }

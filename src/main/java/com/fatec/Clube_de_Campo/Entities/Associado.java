@@ -22,9 +22,10 @@ public class Associado {
     private String cpf;
     @OneToOne
     private Endereco endereco;
-    @OneToMany
-    private Contato contato;
+    @OneToMany(mappedBy = "associado", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Contato> contatos;
     private LocalDate dataCadastrado;
+    @OneToOne
     private TipoAssociado tipoAssociado;
     @OneToMany(mappedBy = "associado", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Dependente> dependentes = new ArrayList<>();
